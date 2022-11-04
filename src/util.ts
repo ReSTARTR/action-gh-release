@@ -18,6 +18,7 @@ export interface Config {
   input_target_commitish?: string;
   input_discussion_category_name?: string;
   input_generate_release_notes?: boolean;
+  input_previous_tag_name?: string;
   input_append_body?: boolean;
 }
 
@@ -69,6 +70,7 @@ export const parseConfig = (env: Env): Config => {
     input_discussion_category_name:
       env.INPUT_DISCUSSION_CATEGORY_NAME || undefined,
     input_generate_release_notes: env.INPUT_GENERATE_RELEASE_NOTES == "true",
+    input_previous_tag_name: env.INPUT_PREVIOUS_TAG_NAME || undefined,
     input_append_body: env.INPUT_APPEND_BODY == "true"
   };
 };
