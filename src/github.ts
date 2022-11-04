@@ -43,6 +43,7 @@ export interface Releaser {
     draft: boolean | undefined;
     prerelease: boolean | undefined;
     target_commitish: string | undefined;
+    previous_tag_name: string | undefined;
     discussion_category_name: string | undefined;
     generate_release_notes: boolean | undefined;
   }): Promise<{ data: Release }>;
@@ -59,6 +60,7 @@ export interface Releaser {
     prerelease: boolean | undefined;
     discussion_category_name: string | undefined;
     generate_release_notes: boolean | undefined;
+    previous_tag_name: string | undefined;
   }): Promise<{ data: Release }>;
 
   allReleases(params: {
@@ -90,6 +92,7 @@ export class GitHubReleaser implements Releaser {
     draft: boolean | undefined;
     prerelease: boolean | undefined;
     target_commitish: string | undefined;
+    previous_tag_name: string | undefined;
     discussion_category_name: string | undefined;
     generate_release_notes: boolean | undefined;
   }): Promise<{ data: Release }> {
@@ -198,6 +201,7 @@ export const release = async (
 
   const discussion_category_name = config.input_discussion_category_name;
   const generate_release_notes = config.input_generate_release_notes;
+  const previous_tag_name = config.input_previous_tag_name;
   try {
     // you can't get a an existing draft by tag
     // so we must find one in the list of all releases
@@ -267,7 +271,8 @@ export const release = async (
       draft,
       prerelease,
       discussion_category_name,
-      generate_release_notes
+      generate_release_notes,
+      previous_tag_name
     });
     return release.data;
   } catch (error) {
@@ -278,6 +283,9 @@ export const release = async (
       const draft = config.input_draft;
       const prerelease = config.input_prerelease;
       const target_commitish = config.input_target_commitish;
+      const previous_tag_name = generate_release_notes
+        ? config.input_previous_tag_name
+        : undefined;
       let commitMessage: string = "";
       if (target_commitish) {
         commitMessage = ` using commit "${target_commitish}"`;
@@ -295,6 +303,7 @@ export const release = async (
           draft,
           prerelease,
           target_commitish,
+          previous_tag_name,
           discussion_category_name,
           generate_release_notes
         });
