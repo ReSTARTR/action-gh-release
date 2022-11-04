@@ -202,6 +202,7 @@ export const release = async (
   const discussion_category_name = config.input_discussion_category_name;
   const generate_release_notes = config.input_generate_release_notes;
   const previous_tag_name = config.input_previous_tag_name;
+  console.log({ generate_release_notes, previous_tag_name });
   try {
     // you can't get a an existing draft by tag
     // so we must find one in the list of all releases
